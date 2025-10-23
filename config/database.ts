@@ -7,7 +7,7 @@ const dbConfig = defineConfig({
       client: 'better-sqlite3',
       connection: {
         // Dùng folder tmp được mount trên Fly.io
-        filename: process.env.DB_DATABASE || '/app/database/database.sqlite',
+        filename: process.env.DB_DATABASE || '/app/data/database.sqlite',
       },
       useNullAsDefault: true,
       migrations: {
