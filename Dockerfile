@@ -37,4 +37,4 @@ CMD sh -c "\
     touch /app/database/database.sqlite; \
     node ace migration:run; \
   fi && \
-  node build/server.js"
+  node build/bin/server.js"
