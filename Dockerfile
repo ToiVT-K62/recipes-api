@@ -1,55 +1,33 @@
-# syntax = docker/dockerfile:1
+# Dockerfile for AdonisJS (SQLite + Fly.io)
+FROM node:20-alpine AS build
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=20.18.0
-FROM node:${NODE_VERSION}-slim AS base
-
-LABEL fly_launch_runtime="AdonisJS"
-
-# AdonisJS app lives here
 WORKDIR /app
 
-# Set production environment
-ENV NODE_ENV="production"
+# Copy package files
+COPY package*.json ./
+RUN npm install
 
-
-# Throw-away build stage to reduce size of final image
-FROM base AS build
-
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
-
-# Install node modules
-COPY package-lock.json package.json ./
-RUN npm ci --include=dev
-
-# Copy application code
+# Copy rest of the project
 COPY . .
 
-# Build application
+# Build for production
 RUN npm run build
 
+# ---- Production image ----
+FROM node:20-alpine AS production
 
-# Final stage for app image
-FROM base
+WORKDIR /app
 
-# Copy built application
-COPY --from=build /app /app
+# Copy built files + node_modules
+COPY --from=build /app/build ./build
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package*.json ./
 
-# Setup sqlite3 on a separate volume
-RUN mkdir -p /data
-VOLUME /data
+# Copy environment and database
+COPY .env.production .env
+COPY database ./database
 
-# Entrypoint sets up the container.
-ENTRYPOINT [ "/app/docker-entrypoint.js" ]
+# Expose port (Adonis default)
+EXPOSE 3333
 
-# Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
-ENV CACHE_VIEWS="true" \
-    DATABASE_URL="file:///data/sqlite.db" \
-    DRIVE_DISK="local" \
-    HOST="0.0.0.0" \
-    PORT="3000" \
-    SESSION_DRIVER="cookie"
-CMD [ "node", "/app/build/server.js" ]
+CMD ["node", "build/server.js"]
