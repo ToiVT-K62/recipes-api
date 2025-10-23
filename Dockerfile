@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 RUN mkdir -p /app/database
-
+COPY database/database.sqlite /app/database/database.sqlite
 # Copy toàn bộ code
 COPY . .
 
