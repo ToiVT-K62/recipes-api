@@ -1,0 +1,23 @@
+{
+  "typescript": true,
+  "commands": {
+    "build": "node ace build --production",
+    "serve": "node ace serve --watch"
+  },
+  "aliases": {
+    "#app": "./app",
+    "#config": "./config",
+    "#database": "./database",
+    "#start": "./start"
+  },
+  "metaFiles": [
+    {
+      "pattern": "public/**",
+      "reloadServer": false
+    },
+    {
+      "pattern": "resources/views/**",
+      "reloadServer": false
+    }
+  ]
+}
