@@ -28,7 +28,6 @@ COPY --from=build /app/.env.production .env
 
 # Tạo thư mục database (Fly.io volume mount)
 RUN mkdir -p /app/database
-COPY --from=build /app/data/database.sqlite /app/data/database.sqlite
 
 # Expose port
 EXPOSE 3333
