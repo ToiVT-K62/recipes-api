@@ -11,6 +11,7 @@ fi
 
 # Chạy migration (chỉ tạo bảng nếu chưa có)
 echo "Chạy migration..."
+node ace migration:run
 
 # Start server
 echo "Khởi động server..."
