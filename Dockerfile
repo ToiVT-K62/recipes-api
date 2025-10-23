@@ -6,6 +6,7 @@ WORKDIR /app
 # Copy package files và cài dependencies
 COPY package*.json ./
 RUN npm ci
+RUN mkdir -p /app/database
 
 # Copy toàn bộ code
 COPY . .
