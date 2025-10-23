@@ -27,7 +27,6 @@ COPY --from=build /app/package*.json ./
 COPY --from=build /app/config ./config
 COPY --from=build /app/start ./start
 COPY --from=build /app/.env.production .env
-COPY --from=build /app/ace ./ace
 COPY --from=build /app/database ./database
 COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
