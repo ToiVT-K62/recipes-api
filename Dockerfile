@@ -13,6 +13,7 @@ RUN mkdir -p /app/database
 # Build AdonisJS production
 RUN npm run build
 
+
 # ---- PRODUCTION IMAGE ----
 FROM node:20-alpine AS production
 WORKDIR /app
@@ -27,6 +28,7 @@ COPY --from=build /app/.env.production .env
 
 # Tạo thư mục database (Fly.io volume mount)
 RUN mkdir -p /app/database
+RUN node ace migration:run
 
 # Expose port
 EXPOSE 3333
