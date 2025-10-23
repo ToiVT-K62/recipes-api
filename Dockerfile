@@ -8,8 +8,7 @@ RUN npm ci
 
 # Copy toàn bộ code & tạo folder database
 COPY . .
-RUN mkdir -p /app/data
-COPY database/database.sqlite /app/data/database.sqlite
+RUN mkdir -p /app/database
 
 # Build AdonisJS production
 RUN npm run build
@@ -27,9 +26,17 @@ COPY --from=build /app/config ./config
 COPY --from=build /app/start ./start
 COPY --from=build /app/.env.production .env
 
-
+# Tạo thư mục database (Fly.io volume mount)
+RUN mkdir -p /app/database
 COPY --from=build /app/data/database.sqlite /app/data/database.sqlite
 
 # Expose port
 EXPOSE 3333
-CMD ["sh", "-c", "node ace migration:run && node build/bin/server.js"]
+
+# Entrypoint: nếu database chưa có thì migrate
+CMD sh -c "\
+  if [ ! -f /app/database/database.sqlite ]; then \
+    touch /app/database/database.sqlite; \
+    node build/bin/ace.js migration:run; \
+  fi && \
+  node build/bin/server.js"
