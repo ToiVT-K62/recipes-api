@@ -26,5 +26,5 @@ primary_region = "sin"
     handlers = ["tls", "http"]
     port = 443
 [mounts]
-  source = "data"
+  source = "app_database"
   destination = "/app/database"
