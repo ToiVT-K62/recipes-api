@@ -27,4 +27,4 @@ primary_region = "sin"
     port = 443
 [mounts]
   source = "data"
-  destination = "/app/tmp"
+  destination = "/app/database"
