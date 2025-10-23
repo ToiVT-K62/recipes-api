@@ -27,8 +27,4 @@ primary_region = "sin"
     port = 443
 [mounts]
   source = "data"
-<<<<<<< HEAD
-  destination = "/app/data"
-=======
   destination = "/app/database"
->>>>>>> parent of cfd3c6a (jin)
