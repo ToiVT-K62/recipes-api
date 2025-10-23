@@ -28,7 +28,7 @@ COPY --from=build /app/.env.production .env
 
 # Tạo thư mục database (Fly.io volume mount)
 RUN mkdir -p /app/database
-RUN node ace migration:run
+CMD sh -c "node ace migration:run"
 
 # Expose port
 EXPOSE 3333
