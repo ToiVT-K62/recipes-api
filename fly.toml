@@ -34,3 +34,10 @@ kill_timeout = 5
 [mounts]
   source = "data"
   destination = "/app/tmp"
+
+[deploy]
+  strategy = "rolling"
+
+[[vm]]
+  size = "shared-cpu-1x"  # <= chỉ 1 CPU core (được miễn phí)
+
