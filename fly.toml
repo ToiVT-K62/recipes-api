@@ -26,3 +26,6 @@ processes = []
     grace_period = "30s"
     interval = "15s"
     timeout = "2s"
+[mounts]
+  source = "data"
+  destination = "/app/tmp"
